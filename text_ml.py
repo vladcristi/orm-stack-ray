@@ -35,7 +35,7 @@ class Translator:
 
 @serve.deployment
 class Summarizer:
-    def __init__(self, translator: RayServeHandle):
+    def __init__(self, translator: DeploymentHandle):
         # Load model
         self.model = pipeline("summarization", model="t5-small")
         self.translator = translator
