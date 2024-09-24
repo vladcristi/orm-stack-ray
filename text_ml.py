@@ -1,6 +1,7 @@
 from starlette.requests import Request
 from typing import Dict
 
+import ray
 from ray import serve
 from ray.serve.handle import DeploymentHandle
 
@@ -57,10 +58,7 @@ class Summarizer:
         english_text: str = await http_request.json()
         summary = self.summarize(english_text)
 
-        translation_ref = await self.translator.translate.remote(summary)
-        translation = await translation_ref
-
-        return translation
+        return await self.translator.translate.remote(summary)
 
     def reconfigure(self, config: Dict):
         self.min_length = config.get("min_length", 5)
